@@ -21,7 +21,8 @@ const app=require('./app');
 mongoose.connect(process.env.DATABASE_LOCAL).then(con=> console.log('connection is success'))
 //connect to local database
 
-const server=app.listen(process.env.PORT, () => {
+const port=process.env.PORT || 8000;
+const server=app.listen(port, () => {
   console.log('welcome from the server');
 });
 
