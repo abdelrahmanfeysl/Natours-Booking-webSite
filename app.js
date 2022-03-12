@@ -11,6 +11,7 @@ const cors=require('cors');
 const mongoSanitize=require('express-mongo-sanitize');
 const xxs=require('xss-clean');
 const hpp=require('hpp');
+const compression=require('compression');
 const viewRouter = require('./routes/viewRoutes');
 const errHandlerMiddleWare=require('./controllers/errorhandler');
 const apiError=require('./utils/apiError');
@@ -76,13 +77,14 @@ that use when this attack happen when we put in the query duplicated fields like
 this will give us error but when we use this middleware that will delete all duplicated and use only last one
  */
 
-
+app.use(compression())
+//to compress all texts that will send to the user
 
 
 
 //THIRD MIDDLEWARE
 app.use(((req, res, next) => {
-  console.log('hello from middleware');
+/*  console.log('hello from middleware');*/
   next();
 }))
 
