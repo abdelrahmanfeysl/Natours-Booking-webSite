@@ -15,7 +15,8 @@ dotenv.config({path:`${__dirname}/config.env`});
 const app=require('./app');
 //console.log(process.env);
 //the last line to print all environment variable
-const DB=process.env.DATABASE.replace('<PASSWORD>',process.env.DATABASE_PASSWORD);
+DATABASE="mongodb+srv://abdo_feysl:<PASSWORD>@cluster0.r7kzg.mongodb.net/natours?retryWrites=true"
+const DB=DATABASE.replace('<PASSWORD>',process.env.DATABASE_PASSWORD);
 //the last line to connect to cloud database not local database
 
 mongoose.connect(DB).then(con=> console.log('connection is success'))
