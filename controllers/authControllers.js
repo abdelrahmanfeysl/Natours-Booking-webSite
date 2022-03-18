@@ -8,15 +8,14 @@ const crypto = require('crypto');
 
 //we do all function about authentication here like sign up or log in
 
-const createSendToken = (user, statusCode, res) => {
+const createSendToken = (user, statusCode,req, res) => {
   const token = tokenSign(user._id);
   const cookiesOption = {
     expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRS_IN * 24 * 60 * 60 * 1000),
-    httpOnly: true //with that the cookie can not access or modified by any way with the browser
-
+    httpOnly: true, //with that the cookie can not access or modified by any way with the browser
+    secure:req.secure || req.headers('x-forwarded-proto') === 'https'
+    //it uses to be the cookie work only in secure protocols   like https
   };
-  if (process.env.NODE_ENV === 'production')
-    cookiesOption.secure = true; //it uses to be the cookie work only in secure protocols   like https
 
   res.cookie('jwt', token, cookiesOption);
   //here we create a cookie and send first the name of it and second the value of it and third option of it
@@ -58,7 +57,7 @@ exports.signUp = async (req, res) => {
 //when we make user sign up it make log in directly ,and we must create jwt for him and send to him when sign up
   const url=`${req.protocol}://${req.get('host')}/Me`
   await new Email(newUser,url).sendWelcome();
-  createSendToken(newUser, 201, res);
+  createSendToken(newUser, 201,req, res);
 };
 
 exports.login = async (req, res) => {
@@ -78,7 +77,7 @@ exports.login = async (req, res) => {
   }
 
   //third create token and send back to user to know that he is log in
-  createSendToken(user, 200, res);
+  createSendToken(user, 200,req, res);
 };
 
 exports.logout = (req, res) => {
@@ -242,7 +241,7 @@ exports.resetPassword = async (req, res) => {
   //we make that when create document middleware in user.model to update changedPasswordAt if the password changed
 
   //4)Log in user ,send JWT
-  createSendToken(user, 201, res);
+  createSendToken(user, 201,req, res);
 
 };
 
@@ -261,6 +260,6 @@ exports.updatePassword = async (req, res) => {
   await user.save();
 
   //4)log user in,send JWT;
-  createSendToken(user, 200, res);
+  createSendToken(user, 200,req, res);
 };
 

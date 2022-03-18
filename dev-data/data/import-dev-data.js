@@ -9,8 +9,8 @@ const Review = require('./../../models/reviewModel');
 dotenv.config({ path: './config.env' });
 
 
-mongoose.connect(process.env.DATABASE_LOCAL).then(con=> console.log('connection is success'))
-
+const DB=process.env.DATABASE.replace('<PASSWORD>',process.env.DATABASE_PASSWORD);
+mongoose.connect(DB).then(con=> console.log('connection is success'))
 // READ JSON FILE
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/tours.json`, 'utf-8')

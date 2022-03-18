@@ -28,6 +28,8 @@ app.set('views',path.join(__dirname,'views'));
 //Serving Static files
 app.use(express.static(path.join(__dirname,'public') ));
 
+app.use('trust proxy');//to trust proxy for heroku
+
 /*app.use(nocache())*/
 //GLOBAL MIDDLEWARE
 app.use(cors());

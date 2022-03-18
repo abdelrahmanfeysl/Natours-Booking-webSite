@@ -37,5 +37,14 @@ process.on('unhandledRejection',err=>
   })
 })
 
+//to handle when heroku send sigterm to shut down  the app
+process.on('SIGTERM',err=>
+{
+  console.log(err.name,err.message);
+  console.log('SIGTERM RECEIVED! SHUTTING DOWN GRACEFULLY! ');
+  server.close(()=> { //close server first to handle and finish all request pending then shot down process
+    console.log('process terminated');
+  })
+})
 
-
+//server.close id handle all requests first and execute them then close the server ,so we use it
