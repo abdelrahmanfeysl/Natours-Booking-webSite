@@ -19,6 +19,7 @@ const tourRouter=require('./routes/tourRoutes');
 const userRouter=require('./routes/userRoutes');
 const reviewRouter=require('./routes/reviewRoutes');
 const bookingRouter=require('./routes/bookingRoutes');
+const bookingController = require('./controllers/bookingControllers');
 const app = express();
 
 app.set('view engine','pug');
@@ -39,6 +40,10 @@ app.use(helmet()) //we should put it in the first of middlewares
 //development logging
 app.use(morgan('dev'));
 
+// note this
+//why is this route here it is right before express.json and that's because we here need the data in a raw format not in jason format
+//we had to do it before it and use express.raw instead
+app.post('/webhook-checkout',express.raw({type:'application/json'}),bookingController.webhookCheckout);
 //middleware to limit number of request that come from the same ip
 const limiter=rateLimit({
   max:100, //mean max num of request =100
