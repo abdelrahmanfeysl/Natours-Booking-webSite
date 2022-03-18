@@ -38,9 +38,8 @@ process.on('unhandledRejection',err=>
 })
 
 //to handle when heroku send sigterm to shut down  the app
-process.on('SIGTERM',err=>
+process.on('SIGTERM',()=>
 {
-  console.log(err.name,err.message);
   console.log('SIGTERM RECEIVED! SHUTTING DOWN GRACEFULLY! ');
   server.close(()=> { //close server first to handle and finish all request pending then shot down process
     console.log('process terminated');
